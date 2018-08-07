@@ -1,6 +1,7 @@
 
 
 
+
 # Android udpxy
 Android library-project wrapper for **udpxy** UDP-to-HTTP Proxy Server.
 
@@ -21,9 +22,17 @@ for multiple network interface
 
 For **non-rooted** device you can't execute udpxy on `sdcard` or `internal storage` try to copy it to `/data/local/`  and change permission to executable but if you can't you must use `wget` and download it from server. Open terminal emulator run the following command
 
+    # this is for armeabi-v7a CPU
+    # for other version see Release page
+    #
     cd $HOME
-    wget https://github.com/ewwink/android-udpxy/releases
-    # or
+    wget https://github.com/ewwink/android-udpxy/releases/download/1.0/udpxy.armeabi-v7a
+    mv udpxy.armeabi-v7a udpxy
+    chmod +x udpxy
+
+or download from your server
+
+    cd $HOME
     wget http://yourServer/udpxy
     chmod +x udpxy
 
