@@ -1,0 +1,12 @@
+# generated files
+/bin/
+/gen/
+
+
+# look at local.properties.sample
+/local.properties
+
+# Eclipse stuff
+/.classpath
+/.project
+/.settings/

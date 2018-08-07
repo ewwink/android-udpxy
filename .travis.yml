@@ -1,0 +1,49 @@
+language: android
+sudo: true
+android:
+  components:
+    - tools
+    - platform-tools
+    - extra-google-m2repository
+    - extra-android-m2repository
+addons:
+#  artifacts:
+#    paths:
+#     - $(git ls-files -o | grep libs/armeabi | tr "\n" ":")
+before_install:
+  - sudo apt-get install ant
+install:
+  - echo y | sdkmanager "ndk-bundle"
+#  - echo y | sdkmanager "cmake;3.6.4111459"
+#  - echo y | sdkmanager "lldb;3.1"
+    #  - sdkmanager --update
+before_script:
+  - export ANDROID_NDK_HOME=$ANDROID_HOME/ndk-bundle
+  - export SYSROOT="$ANDROID_NDK_HOME/platforms/android-19/arch-arm"
+  - export CC="$ANDROID_NDK_HOME/toolchains/arm-linux-androideabi-4.8/prebuilt/linux-x86_64/bin/arm-linux-androideabi-gcc --sysroot=$SYSROOT"
+
+script:
+  # scripts excutes inside our repo directory on CI machine
+  - cd jni/
+  - $ANDROID_HOME/ndk-bundle/ndk-build
+  - cd ../libs
+  - ls
+  - mv "x86/udpxy" "x86/udpxy.x86"
+  - mv "x86_64/udpxy" "x86_64/udpxy.x86_64"
+  - mv "arm64-v8a/udpxy" "arm64-v8a/udpxy.arm64-v8a"
+  - mv "armeabi-v7a/udpxy" "armeabi-v7a/udpxy.armeabi-v7a"
+  - cd $TRAVIS_BUILD_DIR
+  - ls
+
+deploy:
+  provider: releases
+  api_key: $GITHUB_TOKEN
+  file:
+    - "libs/x86/udpxy.x86"
+    - "libs/x86_64/udpxy.x86_64"
+    - "libs/arm64-v8a/udpxy.arm64-v8a"
+    - "libs/armeabi-v7a/udpxy.armeabi-v7a"
+  skip_cleanup: true
+  on:
+    all_branches: true
+    tags: true
